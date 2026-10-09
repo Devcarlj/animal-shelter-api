@@ -628,10 +628,61 @@
           }
         }
       }
+    },
+    "/api/Reports/summary": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShelterSummaryDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShelterSummaryDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShelterSummaryDto"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "ActiveFosterSummaryItemDto": {
+        "type": "object",
+        "properties": {
+          "fosterId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "animalName": {
+            "type": "string",
+            "nullable": true
+          },
+          "adopterName": {
+            "type": "string",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
       "AdopterDto": {
         "type": "object",
         "properties": {
@@ -786,6 +837,55 @@
           },
           "status": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShelterSummaryDto": {
+        "type": "object",
+        "properties": {
+          "totalAnimals": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "adoptableAnimalsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "adoptedOrLockedAnimalsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalAdopters": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "blacklistedAdoptersCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalFosterPlacements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activeFosterPlacements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "animalsBySpecies": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "currentActiveFosters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActiveFosterSummaryItemDto"
+            },
             "nullable": true
           }
         },

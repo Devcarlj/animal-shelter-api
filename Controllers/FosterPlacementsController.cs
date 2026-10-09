@@ -80,7 +80,6 @@ public class FosterPlacementsController : ControllerBase
     {
         var foster = await _context.FosterPlacements.FindAsync(id);
         if (foster == null) return NotFound(new { message = "Foster placement not found." });
-
         foster.Status = "Completed";
 
         // Release the animal back to being adoptable

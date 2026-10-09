@@ -366,5 +366,25 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AnimalShelterApi.Controllers.ReportsController",
+    "Method": "GetShelterSummary",
+    "RelativePath": "api/Reports/summary",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "ShelterSummaryDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]
