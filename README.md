@@ -72,6 +72,20 @@ CREATE TABLE AdoptionApplications (
 );
 GO
 
+-- 4. Foster Placements Table (Temporary Adoption)
+CCREATE TABLE FosterPlacements (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    AnimalId INT NOT NULL,
+    AdopterId INT NOT NULL,
+    TermType NVARCHAR(50) NOT NULL, -- 'Trial', 'Monthly', 'Quarterly', 'Custom'
+    StartDate DATETIME2 NOT NULL DEFAULT GETDATE(),
+    EndDate DATETIME2 NOT NULL,
+    Status NVARCHAR(50) NOT NULL DEFAULT 'Active', -- 'Active', 'Completed', 'Cancelled'
+    CONSTRAINT FK_Foster_Animals FOREIGN KEY (AnimalId) REFERENCES Animals(Id),
+    CONSTRAINT FK_Foster_Adopters FOREIGN KEY (AdopterId) REFERENCES Adopters(Id)
+);
+GO
+
 -- Seed sample data
 INSERT INTO Animals (Name, Species, Breed, AgeMonths, HealthStatus, IsAdoptable) 
 VALUES ('Max', 'Dog', 'Golden Retriever', 24, 'Vaccinated', 1),

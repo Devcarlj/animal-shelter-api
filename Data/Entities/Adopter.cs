@@ -16,4 +16,6 @@ public partial class Adopter
     public bool IsBlacklisted { get; set; }
 
     public virtual ICollection<AdoptionApplication> AdoptionApplications { get; set; } = new List<AdoptionApplication>();
+
+    public virtual ICollection<FosterPlacement> FosterPlacements { get; set; } = new List<FosterPlacement>();
 }

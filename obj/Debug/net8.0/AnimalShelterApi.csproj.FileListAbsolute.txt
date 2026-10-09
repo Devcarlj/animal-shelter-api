@@ -147,3 +147,4 @@ C:\VScodes\AnimalShelterApi\AnimalShelterApi\obj\Debug\net8.0\refint\AnimalShelt
 C:\VScodes\AnimalShelterApi\AnimalShelterApi\obj\Debug\net8.0\AnimalShelterApi.pdb
 C:\VScodes\AnimalShelterApi\AnimalShelterApi\obj\Debug\net8.0\AnimalShelterApi.genruntimeconfig.cache
 C:\VScodes\AnimalShelterApi\AnimalShelterApi\obj\Debug\net8.0\ref\AnimalShelterApi.dll
+C:\VScodes\AnimalShelterApi\AnimalShelterApi\obj\Debug\net8.0\AnimalShelterApi.sourcelink.json
