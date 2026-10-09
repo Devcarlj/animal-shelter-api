@@ -4,8 +4,7 @@ A robust, relational .NET 8 ASP.NET Core Web API built using a **Database-First*
 
 ---
 
-## 🚀 Setup & Installation Guide (For Team Members)
-
+## 🚀 Setup & Installation Guide 
 Follow these steps to clone and run the project locally on your machine:
 
 ### 1. Clone the Repository
