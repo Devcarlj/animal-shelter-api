@@ -148,3 +148,4 @@ C:\VScodes\AnimalShelterApi\AnimalShelterApi\obj\Debug\net8.0\AnimalShelterApi.p
 C:\VScodes\AnimalShelterApi\AnimalShelterApi\obj\Debug\net8.0\AnimalShelterApi.genruntimeconfig.cache
 C:\VScodes\AnimalShelterApi\AnimalShelterApi\obj\Debug\net8.0\ref\AnimalShelterApi.dll
 C:\VScodes\AnimalShelterApi\AnimalShelterApi\obj\Debug\net8.0\AnimalShelterApi.sourcelink.json
+C:\VScodes\AnimalShelterApi\AnimalShelterApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

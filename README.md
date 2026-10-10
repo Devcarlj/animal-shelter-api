@@ -86,6 +86,14 @@ CCREATE TABLE FosterPlacements (
 );
 GO
 
+CREATE TABLE Users (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Username NVARCHAR(100) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(MAX) NOT NULL,
+    Role NVARCHAR(50) NOT NULL DEFAULT 'Staff' -- 'Admin' or 'Staff'
+);
+GO
+
 -- Seed sample data
 INSERT INTO Animals (Name, Species, Breed, AgeMonths, HealthStatus, IsAdoptable) 
 VALUES ('Max', 'Dog', 'Golden Retriever', 24, 'Vaccinated', 1),
