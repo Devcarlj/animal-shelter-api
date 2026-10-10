@@ -2,6 +2,7 @@
 using AnimalShelterApi.Data.Entities;
 using AnimalShelterApi.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +21,7 @@ public class AdoptersController : ControllerBase
         _mapper = mapper;
     }
 
-    // GET: api/adopters
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AdopterDto>>> GetAllAdopters()
     {
@@ -28,7 +29,7 @@ public class AdoptersController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<AdopterDto>>(adopters));
     }
 
-    // GET: api/adopters/5
+
     [HttpGet("{id}")]
     public async Task<ActionResult<AdopterDto>> GetAdopterById(int id)
     {
@@ -38,8 +39,9 @@ public class AdoptersController : ControllerBase
         return Ok(_mapper.Map<AdopterDto>(adopter));
     }
 
-    // POST: api/adopters (Register a new adopter)
+
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<AdopterDto>> CreateAdopter([FromBody] UpsertAdopterDto dto)
     {
         var adopter = _mapper.Map<Adopter>(dto);
@@ -50,8 +52,9 @@ public class AdoptersController : ControllerBase
         return CreatedAtAction(nameof(GetAdopterById), new { id = resultDto.Id }, resultDto);
     }
 
-    // PUT: api/adopters/5 (Update adopter or blacklist status)
+
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateAdopter(int id, [FromBody] UpsertAdopterDto dto)
     {
         var adopter = await _context.Adopters.FindAsync(id);
@@ -63,8 +66,9 @@ public class AdoptersController : ControllerBase
         return Ok(new { message = "Adopter profile updated successfully." });
     }
 
-    // DELETE: api/adopters/5
+
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAdopter(int id)
     {
         var adopter = await _context.Adopters.FindAsync(id);

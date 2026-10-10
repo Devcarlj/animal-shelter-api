@@ -2,6 +2,7 @@
 using AnimalShelterApi.Data.Entities;
 using AnimalShelterApi.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +21,7 @@ public class AdoptionsController : ControllerBase
         _mapper = mapper;
     }
 
-    // GET: api/adoptions
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AdoptionApplicationDto>>> GetApplications()
     {
@@ -28,18 +29,16 @@ public class AdoptionsController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<AdoptionApplicationDto>>(applications));
     }
 
-    // POST: api/adoptions (Automated Business Rule: Check Blacklist & Availability)
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<AdoptionApplicationDto>> CreateApplication([FromBody] CreateAdoptionApplicationDto dto)
     {
-        // Rule 1: Check if the animal exists and is available
         var animal = await _context.Animals.FindAsync(dto.AnimalId);
         if (animal == null || !animal.IsAdoptable)
         {
             return BadRequest(new { message = "Selected animal is not available for adoption." });
         }
 
-        // Rule 2: Check if the adopter exists and is NOT blacklisted
         var adopter = await _context.Adopters.FindAsync(dto.AdopterId);
         if (adopter == null)
         {
@@ -50,7 +49,6 @@ public class AdoptionsController : ControllerBase
             return BadRequest(new { message = "Application rejected: Adopter is flagged under shelter restrictions." });
         }
 
-        // Map DTO to Entity
         var application = _mapper.Map<AdoptionApplication>(dto);
         application.ApplicationDate = DateTime.Now;
         application.Status = "Pending";
@@ -62,8 +60,9 @@ public class AdoptionsController : ControllerBase
         return CreatedAtAction(nameof(GetApplications), new { id = resultDto.Id }, resultDto);
     }
 
-    // PUT: api/adoptions/5/approve (Automated Business Rule: Locks Animal Availability)
+
     [HttpPut("{id}/approve")]
+    [Authorize]
     public async Task<IActionResult> ApproveApplication(int id)
     {
         var application = await _context.AdoptionApplications.FindAsync(id);

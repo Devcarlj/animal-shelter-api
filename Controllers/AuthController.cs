@@ -24,45 +24,41 @@ public class AuthController : ControllerBase
         _configuration = configuration;
     }
 
-    // POST: api/auth/register
+
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto model)
     {
-        // 1. Check if username already exists
+
         if (await _context.Users.AnyAsync(u => u.Username == model.Username))
         {
             return BadRequest(new { message = "Username is already taken." });
         }
 
-        // 2. Create the user entity and securely hash the password
+
         var user = new User
         {
             Username = model.Username,
-            Role = string.IsNullOrEmpty(model.Role) ? "Staff" : model.Role // Default to 'Staff' if not specified
+            Role = string.IsNullOrEmpty(model.Role) ? "Staff" : model.Role
         };
 
         var passwordHasher = new PasswordHasher<User>();
         user.PasswordHash = passwordHasher.HashPassword(user, model.Password);
 
-        // 3. Save to database
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
         return Ok(new { message = "User registered successfully!" });
     }
 
-    // POST: api/auth/login
+
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginDto model)
     {
-        // 1. Find user in the database
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == model.Username);
         if (user == null)
         {
             return Unauthorized(new { message = "Invalid username or password." });
         }
-
-        // 2. Verify hashed password
         var passwordHasher = new PasswordHasher<User>();
         var verificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
 
@@ -71,7 +67,6 @@ public class AuthController : ControllerBase
             return Unauthorized(new { message = "Invalid username or password." });
         }
 
-        // 3. Generate and return JWT token
         var token = GenerateJwtToken(user.Username, user.Role);
 
         return Ok(new AuthResponseDto

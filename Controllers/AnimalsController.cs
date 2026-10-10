@@ -2,6 +2,7 @@
 using AnimalShelterApi.Data.Entities;
 using AnimalShelterApi.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +21,7 @@ public class AnimalsController : ControllerBase
         _mapper = mapper;
     }
 
-    // GET: api/animals
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AnimalDto>>> GetAllAnimals()
     {
@@ -28,7 +29,7 @@ public class AnimalsController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<AnimalDto>>(animals));
     }
 
-    // GET: api/animals/5
+
     [HttpGet("{id}")]
     public async Task<ActionResult<AnimalDto>> GetAnimalById(int id)
     {
@@ -38,8 +39,8 @@ public class AnimalsController : ControllerBase
         return Ok(_mapper.Map<AnimalDto>(animal));
     }
 
-    // POST: api/animals (Register a new animal)
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<AnimalDto>> CreateAnimal([FromBody] UpsertAnimalDto dto)
     {
         var animal = _mapper.Map<Animal>(dto);
@@ -50,8 +51,8 @@ public class AnimalsController : ControllerBase
         return CreatedAtAction(nameof(GetAnimalById), new { id = resultDto.Id }, resultDto);
     }
 
-    // PUT: api/animals/5 (Update animal details)
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateAnimal(int id, [FromBody] UpsertAnimalDto dto)
     {
         var animal = await _context.Animals.FindAsync(id);
@@ -63,8 +64,8 @@ public class AnimalsController : ControllerBase
         return Ok(new { message = "Animal updated successfully." });
     }
 
-    // DELETE: api/animals/5 (Remove an animal)
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAnimal(int id)
     {
         var animal = await _context.Animals.FindAsync(id);
